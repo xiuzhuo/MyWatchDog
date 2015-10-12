@@ -1,0 +1,19 @@
+<android.support.v4.widget.DrawerLayout
+    android:id="@+id/mDrawerLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/content_main"/>
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/mNavigationView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="left"
+        app:headerLayout="@layout/header_nav"
+        app:itemTextColor="@android:color/holo_green_light"
+        app:menu="@menu/menu_nav"/>
+</android.support.v4.widget.DrawerLayout>

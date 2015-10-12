@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">myWatchDog</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <string-array name="tab_titles">
+        <item>Apple</item>
+        <item>Banana</item>
+        <item>Pear</item>
+        <item>Peach</item>
+        <item>Cheery</item>
+        <item>Kiwi</item>
+        <item>Dog</item>
+    </string-array>
+
+</resources>
