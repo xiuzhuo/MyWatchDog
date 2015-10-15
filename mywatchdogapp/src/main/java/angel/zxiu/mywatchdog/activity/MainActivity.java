@@ -6,7 +6,6 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -20,8 +19,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import angel.zxiu.mywatchdog.R;
-import angel.zxiu.mywatchdog.adapter.FragmentPagerAdapter;
+import angel.zxiu.mywatchdog.adapter.pager.FragmentPagerAdapter;
+import angel.zxiu.mywatchdog.fragment.BarkingFragment;
+import angel.zxiu.mywatchdog.fragment.DummyFragment;
 import angel.zxiu.mywatchdog.fragment._BaseFragment;
+import angel.zxiu.mywatchdog.fragment._BaseRecycleFragment;
 
 public class MainActivity extends AppCompatActivity {
     ViewPager mViewPager;
@@ -33,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     AppBarLayout mAppBarLayout;
     NavigationView mNavigationView;
     String[] mTitles;
-    List<Fragment> mFragments;
+    List<_BaseFragment> mFragments;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,16 +62,18 @@ public class MainActivity extends AppCompatActivity {
         mTabLayout = (TabLayout) findViewById(R.id.mTabLayout);
         mAppBarLayout = (AppBarLayout) findViewById(R.id.mAppBarLayout);
         mNavigationView = (NavigationView) findViewById(R.id.mNavigationView);
+
     }
 
     void initData() {
         mTitles = getResources().getStringArray(R.array.tab_titles);
         mFragments = new ArrayList<>();
+        mFragments.add(new BarkingFragment());
         for (int i = 0; i < mTitles.length; i++) {
-            Bundle bundle = new Bundle();
-            bundle.putString(_BaseFragment.DUMMY_TEXT, mTitles[i]);
-            _BaseFragment fragment = new _BaseFragment();
-            fragment.setArguments(bundle);
+//            Bundle bundle = new Bundle();
+//            bundle.putInt(DummyFragment.KEY_LAYOUT_TYPE, DummyFragment.LAYOUT_TYPE_VERTICAL_LIST);
+//            bundle.putString(DummyFragment.DUMMY_TEXT, mTitles[i]);
+            _BaseFragment fragment = new DummyFragment().setLayoutType(_BaseRecycleFragment.LAYOUT_TYPE_VERTICAL_GRID).setTitle(mTitles[i]);
             mFragments.add(fragment);
         }
     }
@@ -80,10 +84,26 @@ public class MainActivity extends AppCompatActivity {
         mActionBarDrawerToggle.syncState();
         mDrawerLayout.setDrawerListener(mActionBarDrawerToggle);
 
-        mFragmentPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager(), mTitles, mFragments);
+        mFragmentPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager(), mFragments);
         mViewPager.setAdapter(mFragmentPagerAdapter);
-        mViewPager.setOffscreenPageLimit(5);
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+//                System.out.println("mTitles="+mTitles[position]);
+                getSupportActionBar().setTitle(mFragmentPagerAdapter.getPageTitle(position));
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+        mViewPager.setOffscreenPageLimit(5);
         mTabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         mTabLayout.setupWithViewPager(mViewPager);
         mTabLayout.setTabsFromPagerAdapter(mFragmentPagerAdapter);

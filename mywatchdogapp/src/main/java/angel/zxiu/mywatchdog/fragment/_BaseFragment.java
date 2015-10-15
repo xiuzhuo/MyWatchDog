@@ -3,51 +3,57 @@ package angel.zxiu.mywatchdog.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-
-import angel.zxiu.mywatchdog.R;
 
 /**
  * Created by zxui on 10/10/15.
  */
-public class _BaseFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
-    public static String DUMMY_TEXT = "DUMMY_TEXT";
-    View view;
-    TextView dummyTextView;
-    String dummyText;
+public abstract class _BaseFragment extends Fragment {
+    public static final String KEY_TITLE = "key_title";
+    protected View view;
+    protected String title;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        if (getArguments() == null) {
+            setArguments(new Bundle());
+        }
         super.onCreate(savedInstanceState);
-        dummyText = getArguments().getString(DUMMY_TEXT);
-    }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_base, null);
-        dummyTextView = (TextView) view.findViewById(R.id.dummy_text);
-        dummyTextView.setText(dummyText);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        view = inflater.inflate(getLayoutResId(), null);
         return view;
     }
 
-    @Override
-    public void onRefresh() {
-
+    View findViewById(int viewId) {
+        return view.findViewById(viewId);
     }
+
+    protected abstract int getLayoutResId();
+
+    public String getTitle() {
+        return title;
+    }
+
+    public _BaseFragment setTitle(String title) {
+        this.title = title;
+        getBundle().putString(KEY_TITLE, title);
+        return this;
+    }
+
+    protected Bundle getBundle() {
+        Bundle bundle = getArguments();
+        if (bundle==null){
+            bundle = new Bundle();
+            setArguments(bundle);
+        }
+        return bundle;
+    }
+
 }

@@ -1,26 +1,25 @@
-package angel.zxiu.mywatchdog.adapter;
+package angel.zxiu.mywatchdog.adapter.pager;
 
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import java.util.List;
 
+import angel.zxiu.mywatchdog.fragment._BaseFragment;
+
 /**
  * Created by zxui on 10/10/15.
  */
 public class FragmentPagerAdapter extends FragmentStatePagerAdapter {
-    String[] mTitles;
-    List<Fragment> mFragments;
+    List<_BaseFragment> mFragments;
 
-    public FragmentPagerAdapter(FragmentManager fm, String[] titles, List<Fragment> fragments) {
+    public FragmentPagerAdapter(FragmentManager fm, List<_BaseFragment> fragments) {
         super(fm);
-        mTitles = titles;
         mFragments = fragments;
     }
 
     @Override
-    public Fragment getItem(int position) {
+    public _BaseFragment getItem(int position) {
         return mFragments.get(position);
     }
 
@@ -31,7 +30,7 @@ public class FragmentPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return mTitles[position];
+        return getItem(position).getTitle();
     }
 
 }

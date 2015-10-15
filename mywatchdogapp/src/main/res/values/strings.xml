@@ -14,4 +14,7 @@
         <item>Dog</item>
     </string-array>
 
+    <!-- Function -->
+    <string name="func_barking_now">Barking now</string>
+    <string name="func_schedule">Schedule</string>
 </resources>
