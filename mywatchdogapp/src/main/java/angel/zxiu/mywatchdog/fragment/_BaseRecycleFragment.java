@@ -15,7 +15,7 @@ import angel.zxiu.mywatchdog.listener.OnRecyclerItemTouchListener;
 /**
  * Created by zxui on 14/10/15.
  */
-public abstract class _BaseRecycleFragment extends _BaseFragment{
+public abstract class _BaseRecycleFragment extends _BaseFragment {
     public static final String KEY_LAYOUT_TYPE = "layout_type";
 
 
@@ -46,7 +46,9 @@ public abstract class _BaseRecycleFragment extends _BaseFragment{
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mRecyclerView = (RecyclerView) findViewById(getRecyclerViewId());
-        mRecyclerView.addOnItemTouchListener(getOnRecyclerItemTouchListener());
+        if (getOnRecyclerItemTouchListener() != null) {
+            mRecyclerView.addOnItemTouchListener(getOnRecyclerItemTouchListener());
+        }
         myRecyclerViewAdapter = getRecycleViewAdapter();
         mRecyclerView.setAdapter(myRecyclerViewAdapter);
         System.out.println("getArguments()=" + getArguments());
