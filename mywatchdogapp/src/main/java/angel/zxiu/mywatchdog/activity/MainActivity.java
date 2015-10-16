@@ -20,10 +20,11 @@ import java.util.List;
 
 import angel.zxiu.mywatchdog.R;
 import angel.zxiu.mywatchdog.adapter.pager.FragmentPagerAdapter;
-import angel.zxiu.mywatchdog.fragment.BarkingFragment;
-import angel.zxiu.mywatchdog.fragment.DummyFragment;
+import angel.zxiu.mywatchdog.fragment.FuncGroupFragment;
 import angel.zxiu.mywatchdog.fragment._BaseFragment;
 import angel.zxiu.mywatchdog.fragment._BaseRecycleFragment;
+import angel.zxiu.mywatchdog.object.Dog;
+import angel.zxiu.mywatchdog.object.FuncGroup;
 
 public class MainActivity extends AppCompatActivity {
     ViewPager mViewPager;
@@ -34,14 +35,13 @@ public class MainActivity extends AppCompatActivity {
     TabLayout mTabLayout;
     AppBarLayout mAppBarLayout;
     NavigationView mNavigationView;
-    String[] mTitles;
     List<_BaseFragment> mFragments;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mViewPager = (ViewPager) findViewById(R.id.mViewPager);
+        mViewPager = (ViewPager) findViewById(R.id.viewPager);
         initViews();
         initData();
         configViews();
@@ -52,28 +52,28 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 }).show();
+
+        System.err.println("dogs=" + Dog.allDogs.get(0));
     }
 
     void initViews() {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.mDrawerLayout);
-        mViewPager = (ViewPager) findViewById(R.id.mViewPager);
+        mViewPager = (ViewPager) findViewById(R.id.viewPager);
         mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
-        mToolbar = (Toolbar) findViewById(R.id.mToolbar);
-        mTabLayout = (TabLayout) findViewById(R.id.mTabLayout);
-        mAppBarLayout = (AppBarLayout) findViewById(R.id.mAppBarLayout);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mTabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        mAppBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
         mNavigationView = (NavigationView) findViewById(R.id.mNavigationView);
 
     }
 
     void initData() {
-        mTitles = getResources().getStringArray(R.array.tab_titles);
         mFragments = new ArrayList<>();
-        mFragments.add(new BarkingFragment());
-        for (int i = 0; i < mTitles.length; i++) {
+        for (FuncGroup funcGroup : FuncGroup.allGroups) {
 //            Bundle bundle = new Bundle();
 //            bundle.putInt(DummyFragment.KEY_LAYOUT_TYPE, DummyFragment.LAYOUT_TYPE_VERTICAL_LIST);
 //            bundle.putString(DummyFragment.DUMMY_TEXT, mTitles[i]);
-            _BaseFragment fragment = new DummyFragment().setLayoutType(_BaseRecycleFragment.LAYOUT_TYPE_VERTICAL_GRID).setTitle(mTitles[i]);
+            _BaseFragment fragment = new FuncGroupFragment().setFuncGroup(funcGroup).setLayoutType(_BaseRecycleFragment.LAYOUT_TYPE_VERTICAL_GRID).setTitle(getString(funcGroup.nameResId));
             mFragments.add(fragment);
         }
     }

@@ -12,8 +12,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import angel.zxiu.mywatchdog.R;
-import angel.zxiu.mywatchdog.fragment._BaseFunctionFragment;
-import angel.zxiu.mywatchdog.function.Function;
+import angel.zxiu.mywatchdog.object.Function;
 import angel.zxiu.mywatchdog.holder._BaseRecyclerViewHolder;
 
 /**
@@ -25,9 +24,9 @@ public class FunctionRecyclerViewAdapter extends RecyclerView.Adapter<FunctionVi
     List<Function> mFunctions;
 
 
-    public FunctionRecyclerViewAdapter(_BaseFunctionFragment functionFragment) {
-        this.mContext = functionFragment.getActivity();
-        mFunctions = functionFragment.getFunctions();
+    public FunctionRecyclerViewAdapter(Context context,List<Function> functions) {
+        this.mContext = context;
+        mFunctions = functions;
     }
 
     @Override

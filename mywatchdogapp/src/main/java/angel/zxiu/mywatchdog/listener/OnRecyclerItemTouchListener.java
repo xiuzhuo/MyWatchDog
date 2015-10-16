@@ -25,18 +25,20 @@ public class OnRecyclerItemTouchListener implements RecyclerView.OnItemTouchList
     @Override
     public boolean onInterceptTouchEvent(RecyclerView view, MotionEvent e) {
         System.err.println(e + " onFingerActionListener=" + onFingerActionListener);
-        if (onFingerActionListener!=null) {
+        if (onFingerActionListener != null) {
             View childView = view.findChildViewUnder(e.getX(), e.getY());
             int position = view.getChildAdapterPosition(childView);
-            switch (e.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    break;
-                case MotionEvent.ACTION_MOVE:
-                    break;
-                case MotionEvent.ACTION_UP:
-                    onFingerActionListener.onFingerUp(childView, position);
-                    break;
+            if (position >= 0) {
+                switch (e.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        onFingerActionListener.onFingerUp(childView, position);
+                        break;
 
+                }
             }
         }
         return onFingerActionListener != null;
@@ -47,15 +49,17 @@ public class OnRecyclerItemTouchListener implements RecyclerView.OnItemTouchList
         System.out.println(e);
         View childView = view.findChildViewUnder(e.getX(), e.getY());
         int position = view.getChildAdapterPosition(childView);
-        switch (e.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                break;
-            case MotionEvent.ACTION_MOVE:
-                onFingerActionListener.onFingerMove(childView, position);
-                break;
-            case MotionEvent.ACTION_UP:
-                onFingerActionListener.onFingerUp(childView, position);
-                break;
+        if (position >= 0) {
+            switch (e.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    onFingerActionListener.onFingerMove(childView, position);
+                    break;
+                case MotionEvent.ACTION_UP:
+                    onFingerActionListener.onFingerUp(childView, position);
+                    break;
+            }
         }
     }
 

@@ -25,7 +25,7 @@ public abstract class _BaseRecycleFragment extends _BaseFragment {
     public static final int LAYOUT_TYPE_HORIZONTAL_GRID = 3;
     private static final int SPAN_COUNT = 2;
 
-    protected int mLayoutType = LAYOUT_TYPE_VERTICAL_GRID;
+    protected int mLayoutType = LAYOUT_TYPE_VERTICAL_LIST;
 
     protected RecyclerView mRecyclerView;
     protected RecyclerView.LayoutManager mLayoutManager;
