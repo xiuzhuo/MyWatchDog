@@ -56,7 +56,7 @@ public class Dog {
             }
         }
         if (selectedDog == null && allDogs.size() > 0) {
-            selectedDog = allDogs.get(0);
+            selectedDog = allDogs.get(0); 
             selectedDog.setSelected(true);
         }
         return selectedDog;
