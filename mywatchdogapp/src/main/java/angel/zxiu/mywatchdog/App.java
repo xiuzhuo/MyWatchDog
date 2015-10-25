@@ -21,6 +21,7 @@ import android.util.DisplayMetrics;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
+import angel.zxiu.mywatchdog.object.Dog;
 import angel.zxiu.mywatchdog.receiver.MyWatchDogReceiver;
 import angel.zxiu.mywatchdog.util.SettingManager;
 
@@ -36,6 +37,7 @@ public class App extends Application implements Constants {
     @Override
     public void onCreate() {
         super.onCreate();
+//        Dog.init();
         context = this;
         Configuration confTmp = new Configuration(getResources().getConfiguration());
         confTmp.locale = new Locale("en");

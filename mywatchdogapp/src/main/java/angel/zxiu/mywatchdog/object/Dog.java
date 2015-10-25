@@ -2,6 +2,11 @@ package angel.zxiu.mywatchdog.object;
 
 import android.graphics.drawable.Drawable;
 
+import org.apache.commons.io.IOUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +26,9 @@ public class Dog {
 
     public static final List<Dog> allDogs = new ArrayList<Dog>() {{
         try {
+            String content = IOUtils.toString(App.context.getAssets().open("dogs.cfg"));
+            System.out.println(content);
+
             for (String name : App.context.getAssets().list("dogs")) {
                 Dog dog = new Dog(name);
                 for (String logoFile : App.context.getAssets().list("dogs/" + name + "/logo")) {
@@ -31,10 +39,31 @@ public class Dog {
                 }
                 add(dog);
             }
+            init();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }};
+    static final String AUDIO_PATH = "audio_path", IMAGE_PATH = "image_path", DOGS = "DOGS", NAME = "name";
+    static String audio_path, image_path;
+
+    public static void init() {
+        try {
+            String content = IOUtils.toString(App.context.getAssets().open("dogs.cfg"));
+            JSONObject jsonObject = new JSONObject(content);
+            audio_path = jsonObject.getString(AUDIO_PATH);
+            image_path = jsonObject.getString(IMAGE_PATH);
+            JSONArray dogsJSONArray = jsonObject.getJSONArray(DOGS);
+            for (int i = 0; i < dogsJSONArray.length(); i++) {
+                JSONObject dogObj = dogsJSONArray.getJSONObject(i);
+                Dog dog = new Dog(dogObj.getString(NAME));
+
+            }
+
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static Dog getSelectedDog() {
         Dog selectedDog = null;
