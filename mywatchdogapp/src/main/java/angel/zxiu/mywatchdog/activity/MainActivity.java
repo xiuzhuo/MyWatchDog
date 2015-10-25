@@ -77,8 +77,6 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 }).show();
-
-        System.err.println("dogs=" + Dog.allDogs.get(0));
     }
 
     @Override

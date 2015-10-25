@@ -10,11 +10,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Queue;
-import java.util.Random;
-import java.util.Stack;
-import java.util.concurrent.LinkedBlockingQueue;
 
 import angel.zxiu.mywatchdog.App;
 import angel.zxiu.mywatchdog.util.SettingManager;
@@ -24,41 +19,29 @@ import angel.zxiu.mywatchdog.util.SettingManager;
  */
 public class Dog {
 
-    public static final List<Dog> allDogs = new ArrayList<Dog>() {{
-        try {
-            String content = IOUtils.toString(App.context.getAssets().open("dogs.cfg"));
-            System.out.println(content);
-
-            for (String name : App.context.getAssets().list("dogs")) {
-                Dog dog = new Dog(name);
-                for (String logoFile : App.context.getAssets().list("dogs/" + name + "/logo")) {
-                    dog.logoFilePath = "dogs/" + name + "/logo/" + logoFile;
-                }
-                for (String audioFile : App.context.getAssets().list("dogs/" + name + "/audio")) {
-                    dog.audioFilePaths.add("dogs/" + name + "/audio/" + audioFile);
-                }
-                add(dog);
-            }
-            init();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }};
-    static final String AUDIO_PATH = "audio_path", IMAGE_PATH = "image_path", DOGS = "DOGS", NAME = "name";
-    static String audio_path, image_path;
+    public static List<Dog> allDogs = new ArrayList<>();
+    static final String KEY_AUDIO_PATH = "audio_path", KEY_IMAGE_PATH = "image_path", KEY_DOGS = "dogs", KEY_NAME = "name", KEY_IMAGE = "image", KEY_AUDIOS = "audios";
+    static String AUDIO_PATH, IMAGE_PATH;
 
     public static void init() {
         try {
             String content = IOUtils.toString(App.context.getAssets().open("dogs.cfg"));
+            System.out.println(content);
             JSONObject jsonObject = new JSONObject(content);
-            audio_path = jsonObject.getString(AUDIO_PATH);
-            image_path = jsonObject.getString(IMAGE_PATH);
-            JSONArray dogsJSONArray = jsonObject.getJSONArray(DOGS);
+            AUDIO_PATH = jsonObject.getString(KEY_AUDIO_PATH);
+            IMAGE_PATH = jsonObject.getString(KEY_IMAGE_PATH);
+            JSONArray dogsJSONArray = jsonObject.getJSONArray(KEY_DOGS);
             for (int i = 0; i < dogsJSONArray.length(); i++) {
                 JSONObject dogObj = dogsJSONArray.getJSONObject(i);
-                Dog dog = new Dog(dogObj.getString(NAME));
-
+                Dog dog = new Dog(dogObj.getString(KEY_NAME));
+                dog.logoFilePath = IMAGE_PATH + dogObj.getString(KEY_IMAGE);
+                JSONArray audios = dogObj.getJSONArray(KEY_AUDIOS);
+                for (int j = 0; j < audios.length(); j++) {
+                    dog.audioFilePaths.add(AUDIO_PATH + audios.getString(j));
+                }
+                allDogs.add(dog);
             }
+
 
         } catch (IOException | JSONException e) {
             e.printStackTrace();

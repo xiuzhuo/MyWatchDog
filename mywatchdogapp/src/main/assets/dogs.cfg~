@@ -6,15 +6,19 @@
          "name":"Bitbull",
          "image":"bitbull.png",
          "audios":[  
-            "DOG_B_01.wav",
-            "DOG_B_02.wav"
+            "DOG_X_01.ogg",
+            "DOG_X_02.ogg",
+            "DOG_X_03.ogg",
+            "DOG_X_04.ogg"
          ]
       },
       {  
          "name":"German Shepherd",
          "image":"german-shepherd.png",
          "audios":[  
-            "DOG_M_02.wav"
+            "DOG_M_01.ogg",
+            "DOG_M_02.ogg",
+            "DOG_M_03.ogg"
          ]
       },
       {  

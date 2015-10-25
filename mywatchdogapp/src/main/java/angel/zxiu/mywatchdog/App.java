@@ -37,8 +37,8 @@ public class App extends Application implements Constants {
     @Override
     public void onCreate() {
         super.onCreate();
-//        Dog.init();
         context = this;
+        Dog.init();
         Configuration confTmp = new Configuration(getResources().getConfiguration());
         confTmp.locale = new Locale("en");
         DisplayMetrics metrics = new DisplayMetrics();
