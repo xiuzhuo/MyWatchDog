@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    package="angel.zxiu.mywatchdog"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="angel.zxiu.mywatchdog">
 
-    <uses-feature android:name="android.hardware.camera"/>
+    <uses-feature android:name="android.hardware.camera" />
 
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
         android:name=".App"
@@ -16,17 +16,28 @@
         android:theme="@style/AppTheme">
         <activity
             android:name="angel.zxiu.mywatchdog.activity.MainActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.FunctionActivity"/>
-        <activity android:name=".activity.MotionDetectionActivity"/>
-        <activity android:name=".activity.SensorsActivity"/>
-        <service android:name=".service.BarkingService"/>
+        <activity
+            android:name=".activity.FunctionActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".activity.MotionDetectionActivity" />
+        <activity android:name=".activity.SensorsActivity" />
+
+        <service android:name=".service.BarkingService" />
+        <service android:name=".service.ListenService" />
+
+        <receiver android:name=".receiver.MyWatchDogReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

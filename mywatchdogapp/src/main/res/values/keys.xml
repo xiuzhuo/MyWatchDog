@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="key_bark_auto">Bark automatically?</string>
+    <string name="key_bark_in_day">Bark in day?</string>
+    <string name="key_bark_in_night">Bark in night?</string>
+</resources>

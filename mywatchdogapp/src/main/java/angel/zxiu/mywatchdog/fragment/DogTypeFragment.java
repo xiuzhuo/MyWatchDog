@@ -5,11 +5,12 @@ import android.view.View;
 
 import angel.zxiu.mywatchdog.adapter.recycler.DogRecyclerViewAdapter;
 import angel.zxiu.mywatchdog.listener.OnRecyclerItemTouchListener;
+import angel.zxiu.mywatchdog.util.AudioUtil;
 
 /**
  * Created by zxui on 16/10/15.
  */
-public class DogFragment extends _BaseRecycleFragment {
+public class DogTypeFragment extends _BaseRecycleFragment {
 
     @Override
     protected RecyclerView.Adapter getRecycleViewAdapter() {
@@ -19,5 +20,11 @@ public class DogFragment extends _BaseRecycleFragment {
     @Override
     protected OnRecyclerItemTouchListener getOnRecyclerItemTouchListener() {
         return null;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        AudioUtil.stop();
     }
 }

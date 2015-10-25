@@ -1,5 +1,6 @@
 package angel.zxiu.mywatchdog.util;
 
+import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
 
 import java.io.IOException;
@@ -35,14 +36,20 @@ public class AudioUtil {
         }
     }
 
+    public static boolean isPlaying(){
+        return mediaPlayer.isPlaying();
+    }
+
     public static void play(String audioFilePath) {
         System.out.println(audioFilePath);
         try {
             if (mediaPlayer.isPlaying()) {
                 mediaPlayer.stop();
-                mediaPlayer.reset();
             }
-            mediaPlayer.setDataSource(App.context.getAssets().openFd(audioFilePath).getFileDescriptor());
+            mediaPlayer.reset();
+            AssetFileDescriptor afd=App.context.getAssets().openFd(audioFilePath);
+            mediaPlayer.setDataSource(afd.getFileDescriptor(),afd.getStartOffset(),afd.getLength());
+            afd.close();
 
 //            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
 //                @Override
@@ -50,10 +57,16 @@ public class AudioUtil {
 //
 //                }
 //            });
-//            mediaPlayer.prepare();
+            mediaPlayer.prepare();
             mediaPlayer.start();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public static void stop(){
+        if (mediaPlayer.isPlaying()){
+            mediaPlayer.stop();
         }
     }
 }

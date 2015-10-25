@@ -1,6 +1,10 @@
 package angel.zxiu.mywatchdog.activity;
 
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
@@ -18,6 +22,7 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
+import angel.zxiu.mywatchdog.App;
 import angel.zxiu.mywatchdog.R;
 import angel.zxiu.mywatchdog.adapter.pager.FragmentPagerAdapter;
 import angel.zxiu.mywatchdog.fragment.FuncGroupFragment;
@@ -25,6 +30,10 @@ import angel.zxiu.mywatchdog.fragment._BaseFragment;
 import angel.zxiu.mywatchdog.fragment._BaseRecycleFragment;
 import angel.zxiu.mywatchdog.object.Dog;
 import angel.zxiu.mywatchdog.object.FuncGroup;
+import angel.zxiu.mywatchdog.service.BarkingService;
+import angel.zxiu.mywatchdog.service.ListenService;
+import angel.zxiu.mywatchdog.util.RecordUtil;
+import angel.zxiu.mywatchdog.util.SettingManager;
 
 public class MainActivity extends AppCompatActivity {
     ViewPager mViewPager;
@@ -36,10 +45,26 @@ public class MainActivity extends AppCompatActivity {
     AppBarLayout mAppBarLayout;
     NavigationView mNavigationView;
     List<_BaseFragment> mFragments;
+    BarkingService barkingService;
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            barkingService = (BarkingService) service;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            barkingService = null;
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        App.requestAudioRecordPermission(this);
+        if (SettingManager.isBarkAuto()){
+            startService(new Intent(this, ListenService.class));
+        }
         setContentView(R.layout.activity_main);
         mViewPager = (ViewPager) findViewById(R.id.viewPager);
         initViews();
@@ -54,6 +79,15 @@ public class MainActivity extends AppCompatActivity {
                 }).show();
 
         System.err.println("dogs=" + Dog.allDogs.get(0));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (SettingManager.isBarkAuto()) {
+            startService(new Intent(this, BarkingService.class));
+        }
+        //bindService(new Intent(this, BarkingService.class), null, BIND_AUTO_CREATE);
     }
 
     void initViews() {

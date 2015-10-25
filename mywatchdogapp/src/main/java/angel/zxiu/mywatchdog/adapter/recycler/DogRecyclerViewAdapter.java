@@ -1,7 +1,9 @@
 package angel.zxiu.mywatchdog.adapter.recycler;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.media.AudioManager;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
@@ -80,6 +82,7 @@ class DogViewHolder extends _BaseRecyclerViewHolder<Dog> {
 
     @Override
     public void findViews(View itemView) {
+        this.itemView = itemView;
         textView = (TextView) itemView.findViewById(R.id.text);
         image = (ImageView) itemView.findViewById(R.id.image);
         checkBox = (CheckBox) itemView.findViewById(R.id.checkbox);
@@ -100,10 +103,26 @@ class DogViewHolder extends _BaseRecyclerViewHolder<Dog> {
         image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-//                builder.setView(View.inflate(v.getContext(), R.layout.item_barking, null));
-//                builder.show();
-                AudioUtil.play(dog.audioFilePaths.get(0));
+                checkBox.performClick();
+                final AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                String[] samples = new String[dog.audioFilePaths.size()];
+                for (int i = 0; i < samples.length; i++) {
+                    samples[i] = "Sample " + (i + 1);
+                }
+                builder.setSingleChoiceItems(samples, -1, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        AudioUtil.play(dog.audioFilePaths.get(which));
+                    }
+                });
+                builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        AudioUtil.stop();
+                    }
+                });
+                builder.show();
+
             }
         });
     }

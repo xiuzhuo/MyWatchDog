@@ -5,6 +5,11 @@ import android.graphics.drawable.Drawable;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Queue;
+import java.util.Random;
+import java.util.Stack;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import angel.zxiu.mywatchdog.App;
 import angel.zxiu.mywatchdog.util.SettingManager;
@@ -31,7 +36,7 @@ public class Dog {
         }
     }};
 
-    public static Dog  getSelectedDog(){
+    public static Dog getSelectedDog() {
         Dog selectedDog = null;
         for (Dog dog : allDogs) {
             if (dog.isSelected()) {
@@ -44,17 +49,33 @@ public class Dog {
         }
         return selectedDog;
     }
-    static{
+
+    static {
         getSelectedDog();
     }
 
     public String name;
     public String logoFilePath;
     public List<String> audioFilePaths = new ArrayList<>();
+    private List<String> randomAudioFilePaths = new ArrayList<>();
     Drawable drawable;
 
     public Dog(String name) {
         this.name = name;
+    }
+
+    public String getRandomAudioFile() {
+        if (randomAudioFilePaths.size() == 0) {
+            randomAudioFilePaths.addAll(audioFilePaths);
+        }
+        int size = randomAudioFilePaths.size();
+        int index = (int) (Math.random() * size);
+        String path = null;
+        if (size > 0) {
+            path = randomAudioFilePaths.get(index);
+            randomAudioFilePaths.remove(index);
+        }
+        return path;
     }
 
     public Drawable getLogoDrawable() {
